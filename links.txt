@@ -1,0 +1,2 @@
+API tutorial -  https://malcoded.com/posts/angular-backend-express
+Angular beginners guide - https://malcoded.com/posts/angular-beginners-guide
