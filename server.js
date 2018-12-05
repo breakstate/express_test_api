@@ -48,35 +48,39 @@ var router = express.Router();			// get instance of the express Router
 	// more routes for our API will happen here
 
 	// on routes that end in /bears
-	router.route('/bears')
+	router.route('/users')
 		.post(function(req, res) {
-			console.log('POST /bears');
-			res.json({ message: 'POST to /bears successful' });
-		})
-
-		.get(function(req, res) {
-			console.log('GET all bears');
-			var test;
-			/*return*/ db.any("select * from user_info"/*where first_name = 'Jerome'*/)
-				//.then()
-			    .then(function (data) {
-      				res.status(200)
-        				.json({
-          					status: 'success',
-          					data: data[1],
-          					message: 'Retrieved ALL puppies'
-        				});
-			
-					//(data => {
-					//test = data[1].first_name;
-					//console.log('DATA:', test/*data[0].first_name*/); // print data
+			db.none('insert into user_info(first_name, last_name, phone_number, email, user_id, user_password)' + 'values(${first_name}, ${last_name}, ${phone_number}, ${email}, ${user_id}, ${user_password})', req.body)
+				.then( function() {
+					res.status(200)
+					.json({
+						status: 'success',
+						message: 'Created new user'
+					});
 				})
 				.catch(error => {
 					console.log('ERROR:', error); // print the error
 				})
-				.finally(db.end); // print the error
+				.finally(db.end);
+			console.log('POST create user: SUCCEEDED');
+			//res.json({ message: 'POST to /users successful' });
+		})
 
-			//res.json({ message: 'GET to /bears successful: ' + test }); // OUTPUTTING UNDEFINED SHIZZ FOR SOME REASON
+		.get(function(req, res) {
+			db.any("select * from user_info")
+				.then(data => {
+					res.status(200)
+					.json({
+						status: 'success',
+						data: data,
+						message: 'Retrieved ALL users'
+					});
+				})
+				.catch(error => {
+					console.log('ERROR:', error); // print the error
+				})
+				.finally(db.end);
+			console.log('GET all users: SUCCEEDED');
 		})
 		
 	// on routes that end in /bears/:bear_id
