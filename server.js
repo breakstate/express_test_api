@@ -56,17 +56,27 @@ var router = express.Router();			// get instance of the express Router
 
 		.get(function(req, res) {
 			console.log('GET all bears');
-
-			db.any("select * from user_info"/*where first_name = 'Jerome'*/)
-				.then(data => {
-					console.log('DATA:', data[0].first_name); // print data
+			var test;
+			/*return*/ db.any("select * from user_info"/*where first_name = 'Jerome'*/)
+				//.then()
+			    .then(function (data) {
+      				res.status(200)
+        				.json({
+          					status: 'success',
+          					data: data[1],
+          					message: 'Retrieved ALL puppies'
+        				});
+			
+					//(data => {
+					//test = data[1].first_name;
+					//console.log('DATA:', test/*data[0].first_name*/); // print data
 				})
 				.catch(error => {
 					console.log('ERROR:', error); // print the error
 				})
 				.finally(db.end); // print the error
 
-			res.json({ message: 'GET to /bears successful' });
+			//res.json({ message: 'GET to /bears successful: ' + test }); // OUTPUTTING UNDEFINED SHIZZ FOR SOME REASON
 		})
 		
 	// on routes that end in /bears/:bear_id
