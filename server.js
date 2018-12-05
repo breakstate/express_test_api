@@ -100,6 +100,22 @@ var router = express.Router();			// get instance of the express Router
 			console.log('PUT to update user: SUCCEEDED');
 		})
 
+		.delete(function(req, res) {
+			db.result('delete from user_info where user_id = $1', req.body.user_id)
+				.then( result => {
+					res.status(200)
+						.json({
+					  	status: 'success',
+					  	message: `Removed ${result.rowCount} puppy`
+					});
+				})
+				.catch(error => {
+					console.log('Error:', error);
+				})
+				.finally(db.end);
+			  console.log('DELETE to remove user: SUCCEEDED');
+		})
+
 	// on routes that end in /bears/:bear_id
 	router.route('/bears/:bear_id')
 		.get(function(req, res) { 
