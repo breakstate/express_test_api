@@ -51,18 +51,20 @@ var router = express.Router();			// get instance of the express Router
 	// on /authenticate route
 	router.route('/authenticate')
 		.post(function(req, res) {
-			var user_email = req.body.email;
-			db.any('select email, user_password from user_info where email = $1', [user_email]) // sterlilize!
-				.then( data => { 
-					//var name = req.body.email;		
-					//var password = req.body.password;
+			db.one({
+				name: 'find-user',
+				text: 'select email, user_password from user_info where email = $1', // can also be QueryFile object
+				values: [req.body.email] // sterlilized
+			})
+				.then( data => {
 					res.status(200)
 					.json({
 						status: 'success',
 						message: 'Authenticating',
-						email: user_email,
-						test: 'test',
-						data: data
+						data: data,
+						data1: data.email,
+						//data2: data[1],
+						//data3: data.email
 					})
 				})
 				.catch(error => {
