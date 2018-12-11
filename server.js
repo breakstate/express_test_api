@@ -25,6 +25,7 @@ const db = pgp(cn);
 // this will let us get the data from a POST request
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+//app.use(morgan('dev'));
 
 var port = process.env.PORT || 8080;	// set out port
 
@@ -47,7 +48,29 @@ var router = express.Router();			// get instance of the express Router
 
 	// more routes for our API will happen here
 
-	// on routes that end in /bears
+	// on /authenticate route
+	router.route('/authenticate')
+		.post(function(req, res) {
+			db.any("select email, user_password from user_info where email = 'req.body.email'") // sterlilize!
+				.then( data =>  { 
+					//var name = req.body.email;		
+					//var password = req.body.password;
+					res.status(200)
+					.json({
+						status: 'success',
+						message: 'Authenticating',
+						email: req.body.email,
+						data: data.password
+					});
+				})
+				.catch(error => {
+					console.log('ERROR:', error); // print the error
+				})
+				.finally(db.end);
+			console.log('POST user authentication: SUCCEEDED');
+	});
+
+	// on routes that end in /users
 	router.route('/users')
 		.post(function(req, res) {
 			db.none('insert into user_info(first_name, last_name, phone_number, email, user_id, user_password)' + 'values(${first_name}, ${last_name}, ${phone_number}, ${email}, ${user_id}, ${user_password})', req.body)
