@@ -10,3 +10,10 @@ https://github.com/vitaly-t/pg-promise/wiki/Learn-by-Example#prepared-statements
 https://mherman.org/blog/designing-a-restful-api-with-node-and-postgres/ - good layout tutorial (puppies)
 https://stackoverflow.com/questions/129677/whats-the-best-method-for-sanitizing-user-input-with-php - SQL security tips
 https://www.npmjs.com/package/morgan - morgan documentation
+https://www.npmjs.com/package/jsonwebtoken - json usage tut
+https://scotch.io/tutorials/authenticate-a-node-js-api-with-json-web-tokens - login and token authentification
+https://en.wikipedia.org/wiki/List_of_HTTP_status_codes http codes
+https://github.com/breakstate/node-postgres-promises/blob/master/queries.js - example by author
+https://github.com/vitaly-t/pg-promise/wiki/Chaining-Queries - chaining queries
+https://scotch.io/tutorials/authenticate-a-node-es6-api-with-json-web-tokens - login and token authentication
+https://www.youtube.com/watch?v=2bPQInszQCk - restful API with express and postgres
