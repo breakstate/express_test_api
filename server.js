@@ -63,7 +63,7 @@ var router = express.Router();			// get instance of the express Router
 
 							var token = jwt.sign({foo: 'bar', user: data.email}, 'shhhh');
 							var decoded = jwt.verify(token, 'shhhh');
-							console.log(decoded.user) // bar
+							console.log(decoded.user)
 
 							res.status(200)
 							.json({
