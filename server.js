@@ -4,23 +4,16 @@
 // ============================================================================
 
 // call the packages we need
-var express		= require('express');	// call express
-var app			= express();			// define our app using express
-var bodyParser	= require('body-parser');
-var pg			= require('pg');
-var pgp			= require('pg-promise')(/*options*/);
-var jwt			= require('jsonwebtoken');
+const express		= require('express');	// call express
+const app			= express();			// define our app using express
+const bodyParser	= require('body-parser');
+const pg			= require('pg');
+const pgp			= require('pg-promise')(/*options*/);
+const jwt			= require('jsonwebtoken');
+const config		= require('./config.js');
 
-const cn = {
-    host: 'ec2-54-247-119-167.eu-west-1.compute.amazonaws.com',
-    port: 5432,
-    database: 'd98er28m6a6qle',
-    user: 'wwezgigpimzyqa',
-    password: '51245111f5582aa18dc48a3c21f9f0dae2e773285428b7731ace341cbee8c867',
-	ssl: true
-};
-
-const db = pgp(cn);
+// configure database connection
+const db = pgp(config.cn);
 
 // configure app to use bodyParser()
 // this will let us get the data from a POST request
@@ -61,8 +54,8 @@ var router = express.Router();			// get instance of the express Router
 					if (data){
 						if (req.body.user_password == data.user_password){
 
-							var token = jwt.sign({foo: 'bar', user: data.email}, 'shhhh');
-							var decoded = jwt.verify(token, 'shhhh');
+							var token = jwt.sign({foo: 'bar', user: data.email}, config.secret);
+							var decoded = jwt.verify(token, config.secret);
 							console.log(decoded.user)
 
 							res.status(200)
