@@ -9,6 +9,7 @@ var app			= express();			// define our app using express
 var bodyParser	= require('body-parser');
 var pg			= require('pg');
 var pgp			= require('pg-promise')(/*options*/);
+var jwt			= require('jsonwebtoken');
 
 const cn = {
     host: 'ec2-54-247-119-167.eu-west-1.compute.amazonaws.com',
@@ -58,13 +59,29 @@ var router = express.Router();			// get instance of the express Router
 			})
 				.then( data => {
 					if (data){
-						res.status(200)
-						.json({
-							status: 'success',
-							message: 'Authenticating',
-							data: data,
-							data1: data.email,
-						})
+						if (req.body.user_password == data.user_password){
+
+							var token = jwt.sign({foo: 'bar', user: data.email}, 'shhhh');
+							var decoded = jwt.verify(token, 'shhhh');
+							console.log(decoded.user) // bar
+
+							res.status(200)
+							.json({
+								status: 'success',
+								message: 'Authenticating',
+								token1: token,
+								data: data,
+								data1: data.email,
+							})
+						} else {
+							res.status(200)
+							.json({
+								status: 'fail',
+								message: 'incorrect password',
+								data: data,
+								data1: data.email,
+							})
+						}
 					} else {
 						res.status(200)
 						.json({
