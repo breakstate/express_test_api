@@ -51,21 +51,27 @@ var router = express.Router();			// get instance of the express Router
 	// on /authenticate route
 	router.route('/authenticate')
 		.post(function(req, res) {
-			db.one({
+			db.oneOrNone({
 				name: 'find-user',
 				text: 'select email, user_password from user_info where email = $1', // can also be QueryFile object
 				values: [req.body.email] // sterlilized
 			})
 				.then( data => {
-					res.status(200)
-					.json({
-						status: 'success',
-						message: 'Authenticating',
-						data: data,
-						data1: data.email,
-						//data2: data[1],
-						//data3: data.email
-					})
+					if (data){
+						res.status(200)
+						.json({
+							status: 'success',
+							message: 'Authenticating',
+							data: data,
+							data1: data.email,
+						})
+					} else {
+						res.status(200)
+						.json({
+							status: 'fail',
+							message: 'user ' + req.body.email + ' not found',
+						})
+					}
 				})
 				.catch(error => {
 					console.log('ERROR:', error); // print the error
