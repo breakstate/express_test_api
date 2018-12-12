@@ -11,6 +11,7 @@ const pg			= require('pg');
 const pgp			= require('pg-promise')(/*options*/);
 const jwt			= require('jsonwebtoken');
 const config		= require('./config.js');
+const user			= require('./src/usingDB/controllers/user');
 
 // configure database connection
 const db = pgp(config.cn);
@@ -108,7 +109,8 @@ var router = express.Router();			// get instance of the express Router
 			console.log('POST create user: SUCCEEDED');
 			//res.json({ message: 'POST to /users successful' });
 		})
-
+		.get(user.getAllUsers)
+/*
 		.get(function(req, res) {
 			db.any("select * from user_info")
 				.then(data => {
@@ -125,7 +127,7 @@ var router = express.Router();			// get instance of the express Router
 				.finally(db.end);
 			console.log('GET all users: SUCCEEDED');
 		})
-		
+*/		
 		.put(function(req, res) {
 			db.none('update user_info set first_name=$1, last_name=$2, phone_number=$3, email=$4, user_id=$5, user_password=$6 where user_id=$5',
 			[req.body.first_name, req.body.last_name, req.body.phone_number, req.body.email, req.body.user_id, req.body.user_password])

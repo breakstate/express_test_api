@@ -23,4 +23,4 @@ const login_utils = {
 	}
 }
 
-export default login_utils;
+//export default login_utils; check why this doesnt work
