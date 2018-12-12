@@ -5,6 +5,9 @@ const db			= pgp(config.cn);
 
 
 	function getAllUsers(req, res) {
+		if (1){
+			console.log('Got a word in');
+		}
 		db.any("select * from user_info")
 			.then(data => {
 				res.status(200)
