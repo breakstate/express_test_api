@@ -1,3 +1,4 @@
+const pgp			= require('pg-promise')(/*options*/);
 module.exports = {
 
     'secret': 'thisisthebestsecret',
@@ -9,5 +10,7 @@ module.exports = {
     user: 'wwezgigpimzyqa',
     password: '51245111f5582aa18dc48a3c21f9f0dae2e773285428b7731ace341cbee8c867',
     ssl: true
-    }
+    },
+    //db = pgp(cn)
 };
+
