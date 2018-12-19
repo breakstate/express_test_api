@@ -7,8 +7,8 @@ const config	= require('../../../config.js');
 		return bcrypt.hashSync(password, bcrypt.genSaltSync(8));
 	}
 
-	function comparePassword(hasPassword, password) {
-		return bcrypt.compareSync(password, hashPassword);
+	function comparePassword(hashedPassword, password) {
+		return bcrypt.compareSync(password, hashedPassword);
 	}
 
 	function isValidEmail(email) {

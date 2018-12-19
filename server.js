@@ -45,7 +45,8 @@ var router = express.Router();			// get instance of the express Router
 
 	// on /authenticate route
 	router.route('/authenticate')
-		.post(function(req, res) {
+		.post(user.authenticateUser)
+		/*.post(function(req, res) {
 			db.oneOrNone({
 				name: 'find-user',
 				text: 'select email, user_password from user_info where email = $1', // can also be QueryFile object
@@ -89,27 +90,12 @@ var router = express.Router();			// get instance of the express Router
 				})
 				.finally(db.end);
 			console.log('POST user authentication: SUCCEEDED');
-	});
+	});*/
 
 	// on routes that end in /users
 	router.route('/users')
-		.post(user.addNewUser) /*{
-			db.none('insert into user_info(first_name, last_name, phone_number, email, user_id, user_password)' + 'values(${first_name}, ${last_name}, ${phone_number}, ${email}, ${user_id}, ${user_password})', req.body)
-				.then( function() {
-					res.status(200)
-					.json({
-						status: 'success',
-						message: 'Created new user'
-					});
-				})
-				.catch(error => {
-					console.log('ERROR:', error); // print the error
-				})
-				.finally(db.end);
-			console.log('POST create user: SUCCEEDED');
-			//res.json({ message: 'POST to /users successful' });
-		})*/
-		.get(user.getAllUsers) // moved to ./src/usingDB/controllers/user.js
+		.post(user.addNewUser)
+		.get(user.getAllUsers)
 		
 		.put(function(req, res) {
 			db.none('update user_info set first_name=$1, last_name=$2, phone_number=$3, email=$4, user_id=$5, user_password=$6 where user_id=$5',
