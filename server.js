@@ -10,11 +10,11 @@ const bodyParser	= require('body-parser');
 const pg			= require('pg');
 const pgp			= require('pg-promise')(/*options*/);
 const jwt			= require('jsonwebtoken');
-const config		= require('./config.js');
+const config		= require('./config');
 const user			= require('./src/usingDB/controllers/user');
 
 // configure database connection
-const db = pgp(config.cn);
+const db = config.db;
 
 // configure app to use bodyParser()
 // this will let us get the data from a POST request
@@ -46,51 +46,6 @@ var router = express.Router();			// get instance of the express Router
 	// on /authenticate route
 	router.route('/authenticate')
 		.post(user.authenticateUser)
-		/*.post(function(req, res) {
-			db.oneOrNone({
-				name: 'find-user',
-				text: 'select email, user_password from user_info where email = $1', // can also be QueryFile object
-				values: [req.body.email] // sterlilized
-			})
-				.then( data => {
-					if (data){
-						if (req.body.user_password == data.user_password){
-
-							var token = jwt.sign({foo: 'bar', user: data.email}, config.secret);
-							var decoded = jwt.verify(token, config.secret);
-							console.log(decoded.user)
-
-							res.status(200)
-							.json({
-								status: 'success',
-								message: 'Authenticating',
-								token1: token,
-								data: data,
-								data1: data.email,
-							})
-						} else {
-							res.status(200)
-							.json({
-								status: 'fail',
-								message: 'incorrect password',
-								data: data,
-								data1: data.email,
-							})
-						}
-					} else {
-						res.status(200)
-						.json({
-							status: 'fail',
-							message: 'user ' + req.body.email + ' not found',
-						})
-					}
-				})
-				.catch(error => {
-					console.log('ERROR:', error); // print the error
-				})
-				.finally(db.end);
-			console.log('POST user authentication: SUCCEEDED');
-	});*/
 
 	// on routes that end in /users
 	router.route('/users')

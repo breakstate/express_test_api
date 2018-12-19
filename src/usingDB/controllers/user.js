@@ -2,9 +2,9 @@ const login_utils	= require('./login_utils');
 const queries		= require('./queries');
 const config		= require('../../../config.js');
 const pgp			= require('pg-promise')(/*options*/);
-const db			= pgp(config.cn);
 const jwt			= require('jsonwebtoken');
 
+const db			= config.db;
 
 	function getAllUsers(req, res) {
 		if (1){
