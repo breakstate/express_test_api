@@ -17,3 +17,4 @@ https://github.com/breakstate/node-postgres-promises/blob/master/queries.js - ex
 https://github.com/vitaly-t/pg-promise/wiki/Chaining-Queries - chaining queries
 https://scotch.io/tutorials/authenticate-a-node-es6-api-with-json-web-tokens - login and token authentication
 https://www.youtube.com/watch?v=2bPQInszQCk - restful API with express and postgres
+https://github.com/wildbit/postmark.js/wiki/Migrating-from-1.x-to-2.x-version - postmark setup

@@ -30,6 +30,12 @@ var router = express.Router();			// get instance of the express Router
 
 	// middleware to use for all requests
 	router.use(function(req, res, next) {
+		//config.postmarkClient.sendEmail({ // WORKS!
+		//	"From": "bmoodley@student.wethinkcode.co.za",
+		//	"To": "bmoodley@student.wethinkcode.co.za",
+		//	"Subject": "Test",
+		//	"TextBody": "Hello from Postmark!"
+		//  });
 		// do logging
 		console.log('Something is happening');
 		next(); // make sure we go to the next routes and don't stop here
@@ -43,7 +49,7 @@ var router = express.Router();			// get instance of the express Router
 
 	// more routes for our API will happen here
 
-	// on /authenticate route
+	// on routes that end in /authenticate
 	router.route('/authenticate')
 		.post(user.authenticateUser)
 
@@ -51,39 +57,8 @@ var router = express.Router();			// get instance of the express Router
 	router.route('/users')
 		.post(user.addNewUser)
 		.get(user.getAllUsers)
-		
-		.put(function(req, res) {
-			db.none('update user_info set first_name=$1, last_name=$2, phone_number=$3, email=$4, user_id=$5, user_password=$6 where user_id=$5',
-			[req.body.first_name, req.body.last_name, req.body.phone_number, req.body.email, req.body.user_id, req.body.user_password])
-			  .then(data => {
-				  res.status(200)
-				  .json({
-						status: 'success',
-						message: 'Updated user'
-				  });
-			  })
-			  .catch(error => {
-				  console.log('Error:', error);
-			  })
-			  .finally(db.end);
-			console.log('PUT to update user: SUCCEEDED');
-		})
-
-		.delete(function(req, res) {
-			db.result('delete from user_info where user_id = $1', req.body.user_id)
-				.then( result => {
-					res.status(200)
-						.json({
-					  	status: 'success',
-					  	message: `Removed ${result.rowCount} puppy`
-					});
-				})
-				.catch(error => {
-					console.log('Error:', error);
-				})
-				.finally(db.end);
-			  console.log('DELETE to remove user: SUCCEEDED');
-		})
+		.put(user.updateUser) // put for each field needing updating
+		.delete(user.deleteUser)
 
 	// on routes that end in /bears/:bear_id
 	router.route('/bears/:bear_id')

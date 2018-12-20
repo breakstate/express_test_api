@@ -118,8 +118,44 @@ const db			= config.db;
 		console.log('POST user authentication: SUCCEEDED');
 	}
 
+	function updateUser(req, res){
+		// check if token has admin rights
+		db.none('update user_info set first_name=$1, last_name=$2, phone_number=$3, email=$4, user_id=$5, user_password=$6 where user_id=$5',
+		[req.body.first_name, req.body.last_name, req.body.phone_number, req.body.email, req.body.user_id, req.body.user_password])
+		  .then(data => {
+			  res.status(200)
+			  .json({
+					status: 'success',
+					message: 'Updated user'
+			  });
+		  })
+		  .catch(error => {
+			  console.log('Error:', error);
+		  })
+		  .finally(db.end);
+		console.log('PUT to update user: SUCCEEDED');
+	}
+
+	function deleteUser(req, res){
+		db.result('delete from user_info where user_id = $1', req.body.user_id)
+		.then( result => {
+			res.status(200)
+				.json({
+				  status: 'success',
+				  message: `Removed ${result.rowCount} puppy`
+			});
+		})
+		.catch(error => {
+			console.log('Error:', error);
+		})
+		.finally(db.end);
+	  console.log('DELETE to remove user: SUCCEEDED');
+	}
+
 module.exports = {
 	getAllUsers: getAllUsers,
 	addNewUser: addNewUser,
-	authenticateUser: authenticateUser
+	authenticateUser: authenticateUser,
+	updateUser: updateUser,
+	deleteUser: deleteUser
 };
